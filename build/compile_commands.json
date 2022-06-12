@@ -1,0 +1,139 @@
+[
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/Acceptor.cpp.o -c /home/zhangzf/httpancake/src/network/Acceptor.cpp",
+  "file": "/home/zhangzf/httpancake/src/network/Acceptor.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/Buffer.cpp.o -c /home/zhangzf/httpancake/src/network/Buffer.cpp",
+  "file": "/home/zhangzf/httpancake/src/network/Buffer.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/Socket.cpp.o -c /home/zhangzf/httpancake/src/network/Socket.cpp",
+  "file": "/home/zhangzf/httpancake/src/network/Socket.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/socketUtils.cpp.o -c /home/zhangzf/httpancake/src/network/socketUtils.cpp",
+  "file": "/home/zhangzf/httpancake/src/network/socketUtils.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/TcpConnection.cpp.o -c /home/zhangzf/httpancake/src/network/TcpConnection.cpp",
+  "file": "/home/zhangzf/httpancake/src/network/TcpConnection.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/TcpServer.cpp.o -c /home/zhangzf/httpancake/src/network/TcpServer.cpp",
+  "file": "/home/zhangzf/httpancake/src/network/TcpServer.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o reactorlib/CMakeFiles/reactor.dir/EventLoop.cpp.o -c /home/zhangzf/httpancake/src/reactor/EventLoop.cpp",
+  "file": "/home/zhangzf/httpancake/src/reactor/EventLoop.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o reactorlib/CMakeFiles/reactor.dir/EventLoopThread.cpp.o -c /home/zhangzf/httpancake/src/reactor/EventLoopThread.cpp",
+  "file": "/home/zhangzf/httpancake/src/reactor/EventLoopThread.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o reactorlib/CMakeFiles/reactor.dir/EventLoopThreadPool.cpp.o -c /home/zhangzf/httpancake/src/reactor/EventLoopThreadPool.cpp",
+  "file": "/home/zhangzf/httpancake/src/reactor/EventLoopThreadPool.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o reactorlib/CMakeFiles/reactor.dir/Handler.cpp.o -c /home/zhangzf/httpancake/src/reactor/Handler.cpp",
+  "file": "/home/zhangzf/httpancake/src/reactor/Handler.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o reactorlib/CMakeFiles/reactor.dir/Poller.cpp.o -c /home/zhangzf/httpancake/src/reactor/Poller.cpp",
+  "file": "/home/zhangzf/httpancake/src/reactor/Poller.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o logginglib/CMakeFiles/logging.dir/LogStream.cpp.o -c /home/zhangzf/httpancake/src/logging/LogStream.cpp",
+  "file": "/home/zhangzf/httpancake/src/logging/LogStream.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o logginglib/CMakeFiles/logging.dir/Logger.cpp.o -c /home/zhangzf/httpancake/src/logging/Logger.cpp",
+  "file": "/home/zhangzf/httpancake/src/logging/Logger.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o logginglib/CMakeFiles/logging.dir/NonBlockingLog.cpp.o -c /home/zhangzf/httpancake/src/logging/NonBlockingLog.cpp",
+  "file": "/home/zhangzf/httpancake/src/logging/NonBlockingLog.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../tests/../src/network -I../tests/../src/reactor -I../tests/../src/logging  -g   -g -o test-bin/CMakeFiles/simpleWebServer.dir/simpleWebServer.cpp.o -c /home/zhangzf/httpancake/tests/simpleWebServer.cpp",
+  "file": "/home/zhangzf/httpancake/tests/simpleWebServer.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../tests/../src/network -I../tests/../src/reactor -I../tests/../src/logging  -g   -g -o test-bin/CMakeFiles/echo.dir/echo.cpp.o -c /home/zhangzf/httpancake/tests/echo.cpp",
+  "file": "/home/zhangzf/httpancake/tests/echo.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../tests/../src/network -I../tests/../src/reactor -I../tests/../src/logging  -g   -g -o test-bin/CMakeFiles/discard.dir/discard.cpp.o -c /home/zhangzf/httpancake/tests/discard.cpp",
+  "file": "/home/zhangzf/httpancake/tests/discard.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../tests/../src/network -I../tests/../src/reactor -I../tests/../src/logging  -g   -g -o test-bin/CMakeFiles/threadIdentityTest.dir/threadIdentityTest.cpp.o -c /home/zhangzf/httpancake/tests/threadIdentityTest.cpp",
+  "file": "/home/zhangzf/httpancake/tests/threadIdentityTest.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../tests/../src/network -I../tests/../src/reactor -I../tests/../src/logging  -g   -g -o test-bin/CMakeFiles/reactorTest1.dir/reactorTest1.cpp.o -c /home/zhangzf/httpancake/tests/reactorTest1.cpp",
+  "file": "/home/zhangzf/httpancake/tests/reactorTest1.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../tests/../src/network -I../tests/../src/reactor -I../tests/../src/logging  -g   -g -o test-bin/CMakeFiles/LoggerTest.dir/LoggerTest.cpp.o -c /home/zhangzf/httpancake/tests/LoggerTest.cpp",
+  "file": "/home/zhangzf/httpancake/tests/LoggerTest.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../tests/../src/network -I../tests/../src/reactor -I../tests/../src/logging  -g   -g -o test-bin/CMakeFiles/nonBlockingLogTest.dir/nonBlockingLogTest.cpp.o -c /home/zhangzf/httpancake/tests/nonBlockingLogTest.cpp",
+  "file": "/home/zhangzf/httpancake/tests/nonBlockingLogTest.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../httpancake/../src/reactor -I../httpancake/../src/network  -g   -g -o bin/CMakeFiles/httpancake.dir/httPancake.cpp.o -c /home/zhangzf/httpancake/httpancake/httPancake.cpp",
+  "file": "/home/zhangzf/httpancake/httpancake/httPancake.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../httpancake/../src/reactor -I../httpancake/../src/network  -g   -g -o bin/CMakeFiles/httpancake.dir/webServer.cpp.o -c /home/zhangzf/httpancake/httpancake/webServer.cpp",
+  "file": "/home/zhangzf/httpancake/httpancake/webServer.cpp"
+}
+]
