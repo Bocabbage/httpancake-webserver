@@ -15,6 +15,9 @@ class EventLoop;
 class Acceptor;
 class TcpConnection;
 
+// static factory function
+enum connectionType { TCPCONN, HTTPTCPCONN };
+
 class TcpServer
 {
     using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
@@ -25,7 +28,7 @@ class TcpServer
     using CloseCallback = std::function<void(const TcpConnectionPtr&)>;
 
 public:
-    explicit TcpServer(EventLoop*, const string&, uint16_t, int);
+    explicit TcpServer(EventLoop*, const string&, uint16_t, int threadNum=2, connectionType connType=TCPCONN);
     TcpServer(const TcpServer&) = delete;
     TcpServer& operator=(const TcpServer&) = delete;
     ~TcpServer();
@@ -44,6 +47,8 @@ private:
     void handleNewConnection(int sockfd, const string &peerAddr, uint16_t peerPort);
     void handleRemoveConnection(const TcpConnectionPtr&);
     void handleRemoveConnectionInLoop(const TcpConnectionPtr&);
+
+    connectionType connType_;
 
     EventLoop *lp_;
     EventLoopThreadPool lpThreadPool_;

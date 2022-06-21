@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "TcpServer.hpp"
-#include "TcpConnection.hpp"
+#include "httpTcpConnection.hpp"
 
 using std::string;
 class EventLoop;

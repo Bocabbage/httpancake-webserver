@@ -11,8 +11,8 @@ TcpConnection::TcpConnection(
     const string &peerAddr, uint16_t peerPort
 ):
 lp_(lp), connName_(name),
-sock_(new Socket(sockfd)),
-handler_(new Handler(sockfd, lp)),
+sock_(std::make_unique<Socket>(sockfd)),
+handler_(std::make_unique<Handler>(sockfd, lp)),
 state_(CONNECTING),
 hostAddr_(hostAddr), hostPort_(hostPort),
 peerAddr_(peerAddr), peerPort_(peerPort)

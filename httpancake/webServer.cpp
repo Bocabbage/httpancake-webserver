@@ -1,5 +1,6 @@
 #include "webServer.hpp"
 #include "Buffer.hpp"
+#include "Logger.hpp"
 #include <functional>
 #include <string.h>
 #include <fcntl.h>
@@ -17,7 +18,7 @@ webServer::webServer(
     string fileDir, 
     int threadNum
 ):
-server_(lp, hostAddr, hostPort, threadNum),
+server_(lp, hostAddr, hostPort, threadNum, HTTPTCPCONN),
 fileDir_(fileDir)
 {
     server_.setConnectionCallback(std::bind(&webServer::onConnection, this, _1));
@@ -34,13 +35,18 @@ void webServer::onConnection(const TcpConnectionPtr& conn)
 {
     if(conn->connected())
     {
-        printf("onConnection(): new connection [%s]\n",
-               conn->name().c_str());
+        // printf("onConnection(): new connection [%s]\n",
+        //        conn->name().c_str());
+        LOG << "onConnection(): new connection [" << conn->name().c_str() << "]";
     }
     else
     {
-        printf("onConnection(): connection [%s] is down; now %d conns.\n",
-               conn->name().c_str(), server_.connSize());
+        // printf("onConnection(): connection [%s] is down; now %d conns.\n",
+        //        conn->name().c_str(), server_.connSize());
+
+        LOG << "onConnection(): connection [" << conn->name().c_str() << "] is down; "
+            << "now " << server_.connSize() << "conns.";
+        
     }
 }
 

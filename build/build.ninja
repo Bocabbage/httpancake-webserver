@@ -124,6 +124,13 @@ build networklib/CMakeFiles/network.dir/TcpConnection.cpp.o: CXX_COMPILER__netwo
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
 
+build networklib/CMakeFiles/network.dir/httpTcpConnection.cpp.o: CXX_COMPILER__network ../src/network/httpTcpConnection.cpp || cmake_object_order_depends_target_network
+  DEP_FILE = networklib/CMakeFiles/network.dir/httpTcpConnection.cpp.o.d
+  FLAGS = -g   -g
+  INCLUDES = -I../src/network/../reactor
+  OBJECT_DIR = networklib/CMakeFiles/network.dir
+  OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
+
 build networklib/CMakeFiles/network.dir/TcpServer.cpp.o: CXX_COMPILER__network ../src/network/TcpServer.cpp || cmake_object_order_depends_target_network
   DEP_FILE = networklib/CMakeFiles/network.dir/TcpServer.cpp.o.d
   FLAGS = -g   -g
@@ -139,7 +146,7 @@ build networklib/CMakeFiles/network.dir/TcpServer.cpp.o: CXX_COMPILER__network .
 #############################################
 # Link the static library networklib/libnetwork.a
 
-build networklib/libnetwork.a: CXX_STATIC_LIBRARY_LINKER__network networklib/CMakeFiles/network.dir/Acceptor.cpp.o networklib/CMakeFiles/network.dir/Buffer.cpp.o networklib/CMakeFiles/network.dir/Socket.cpp.o networklib/CMakeFiles/network.dir/socketUtils.cpp.o networklib/CMakeFiles/network.dir/TcpConnection.cpp.o networklib/CMakeFiles/network.dir/TcpServer.cpp.o || reactorlib/libreactor.a
+build networklib/libnetwork.a: CXX_STATIC_LIBRARY_LINKER__network networklib/CMakeFiles/network.dir/Acceptor.cpp.o networklib/CMakeFiles/network.dir/Buffer.cpp.o networklib/CMakeFiles/network.dir/Socket.cpp.o networklib/CMakeFiles/network.dir/socketUtils.cpp.o networklib/CMakeFiles/network.dir/TcpConnection.cpp.o networklib/CMakeFiles/network.dir/httpTcpConnection.cpp.o networklib/CMakeFiles/network.dir/TcpServer.cpp.o || reactorlib/libreactor.a
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   POST_BUILD = :
@@ -595,19 +602,19 @@ build bin/edit_cache: phony bin/CMakeFiles/edit_cache.util
 #############################################
 # Order-only phony target for httpancake
 
-build cmake_object_order_depends_target_httpancake: phony || cmake_object_order_depends_target_network cmake_object_order_depends_target_reactor
+build cmake_object_order_depends_target_httpancake: phony || cmake_object_order_depends_target_logging cmake_object_order_depends_target_network cmake_object_order_depends_target_reactor
 
 build bin/CMakeFiles/httpancake.dir/httPancake.cpp.o: CXX_COMPILER__httpancake ../httpancake/httPancake.cpp || cmake_object_order_depends_target_httpancake
   DEP_FILE = bin/CMakeFiles/httpancake.dir/httPancake.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../httpancake/../src/reactor -I../httpancake/../src/network
+  INCLUDES = -I../httpancake/../src/reactor -I../httpancake/../src/network -I../httpancake/../src/logging
   OBJECT_DIR = bin/CMakeFiles/httpancake.dir
   OBJECT_FILE_DIR = bin/CMakeFiles/httpancake.dir
 
 build bin/CMakeFiles/httpancake.dir/webServer.cpp.o: CXX_COMPILER__httpancake ../httpancake/webServer.cpp || cmake_object_order_depends_target_httpancake
   DEP_FILE = bin/CMakeFiles/httpancake.dir/webServer.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../httpancake/../src/reactor -I../httpancake/../src/network
+  INCLUDES = -I../httpancake/../src/reactor -I../httpancake/../src/network -I../httpancake/../src/logging
   OBJECT_DIR = bin/CMakeFiles/httpancake.dir
   OBJECT_FILE_DIR = bin/CMakeFiles/httpancake.dir
 
@@ -619,9 +626,9 @@ build bin/CMakeFiles/httpancake.dir/webServer.cpp.o: CXX_COMPILER__httpancake ..
 #############################################
 # Link the executable bin/httpancake
 
-build bin/httpancake: CXX_EXECUTABLE_LINKER__httpancake bin/CMakeFiles/httpancake.dir/httPancake.cpp.o bin/CMakeFiles/httpancake.dir/webServer.cpp.o | reactorlib/libreactor.a networklib/libnetwork.a reactorlib/libreactor.a || networklib/libnetwork.a reactorlib/libreactor.a
+build bin/httpancake: CXX_EXECUTABLE_LINKER__httpancake bin/CMakeFiles/httpancake.dir/httPancake.cpp.o bin/CMakeFiles/httpancake.dir/webServer.cpp.o | reactorlib/libreactor.a networklib/libnetwork.a logginglib/liblogging.a reactorlib/libreactor.a || logginglib/liblogging.a networklib/libnetwork.a reactorlib/libreactor.a
   FLAGS = -g
-  LINK_LIBRARIES = reactorlib/libreactor.a  networklib/libnetwork.a  reactorlib/libreactor.a  -lpthread
+  LINK_LIBRARIES = reactorlib/libreactor.a  networklib/libnetwork.a  logginglib/liblogging.a  reactorlib/libreactor.a  -lpthread
   OBJECT_DIR = bin/CMakeFiles/httpancake.dir
   POST_BUILD = :
   PRE_LINK = :

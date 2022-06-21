@@ -2,6 +2,7 @@
 #include "EventLoop.hpp"
 #include "Acceptor.hpp"
 #include "TcpConnection.hpp"
+#include "httpTcpConnection.hpp"
 #include <arpa/inet.h>
 #include <string.h>
 
@@ -9,13 +10,34 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-TcpServer::TcpServer(EventLoop* lp, const string& hostAddr, uint16_t hostPort, int threadNum=2):
+// static tcpconnection factory function
+template<typename... Args>
+std::shared_ptr<TcpConnection> createConnection(connectionType connType, Args&&... args)
+{
+    if(connType == TCPCONN)
+    {
+        return std::make_shared<TcpConnection>(std::forward<Args>(args)...);
+    }
+    else if(connType == HTTPTCPCONN)
+    {
+        return std::make_shared<HttpTcpConnection>(std::forward<Args>(args)...);
+    }
+
+    // should not come here
+    return nullptr;
+}
+
+TcpServer::TcpServer(
+    EventLoop* lp, const string& hostAddr, uint16_t hostPort, int threadNum,
+    connectionType connType
+):
 lp_(lp),
 lpThreadPool_(lp_, threadNum),
 nextConnId_(1),
-acceptor_(new Acceptor(lp_, hostAddr, hostPort)),
+acceptor_(std::make_unique<Acceptor>(lp_, hostAddr, hostPort)),
 started_(false),
-serverName_(hostAddr + ':' + std::to_string(hostPort))
+serverName_(hostAddr + ':' + std::to_string(hostPort)),
+connType_(connType)
 {
     acceptor_->setNewConnCallback(
         std::bind(&TcpServer::handleNewConnection, this, _1, _2, _3)
@@ -71,9 +93,15 @@ void TcpServer::handleNewConnection(int sockfd, const string &peerAddr, uint16_t
 
 // Create new TcpConnection obj, set the callback
     EventLoop* workLp = lpThreadPool_.getNextLoop();
-    TcpConnectionPtr conn = std::make_shared<TcpConnection>(
-        workLp, connName, sockfd, hostAddr, hostPort, peerAddr, peerPort 
+
+    // TcpConnectionPtr conn = std::make_shared<TcpConnection>(
+    //     workLp, connName, sockfd, hostAddr, hostPort, peerAddr, peerPort 
+    // );
+    TcpConnectionPtr conn = createConnection(
+        connType_, 
+        workLp, connName, sockfd, hostAddr, hostPort, peerAddr, peerPort
     );
+
     conn->setConnectionCallback(connCb_);
     conn->setMessageCallback(messageCb_);
     conn->setWriteCompleteCallback(writeCb_);

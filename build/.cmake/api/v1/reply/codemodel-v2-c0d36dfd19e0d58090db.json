@@ -154,7 +154,7 @@
 				{
 					"directoryIndex" : 5,
 					"id" : "httpancake::@90a2315b7a9c97cd24d2",
-					"jsonFile" : "target-httpancake-Debug-0c70cdc6c6c728f158d7.json",
+					"jsonFile" : "target-httpancake-Debug-d5368a3e28e047fceb14.json",
 					"name" : "httpancake",
 					"projectIndex" : 0
 				},
@@ -168,7 +168,7 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "network::@d0f849f324e2c9cd2c20",
-					"jsonFile" : "target-network-Debug-98ee9a9895217d627b4a.json",
+					"jsonFile" : "target-network-Debug-1d7b3fb9f79628e60f35.json",
 					"name" : "network",
 					"projectIndex" : 0
 				},

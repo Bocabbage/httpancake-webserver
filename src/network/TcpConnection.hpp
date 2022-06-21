@@ -26,7 +26,7 @@ public:
         const string &hostAddr, uint16_t hostPort,
         const string &peerAddr, uint16_t peerPort
     );
-    ~TcpConnection();
+    virtual ~TcpConnection();
 
     bool connected() const { return state_ == CONNECTED; }
     string name() const { return connName_; }

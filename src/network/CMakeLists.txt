@@ -7,6 +7,7 @@ set(
     Socket.cpp
     socketUtils.cpp
     TcpConnection.cpp
+    httpTcpConnection.cpp
     TcpServer.cpp
 )
 
