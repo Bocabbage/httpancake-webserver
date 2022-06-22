@@ -82,6 +82,22 @@ public:
         return str;
     }
 
+    // Add by Zhuofan-Zhang
+    std::string retrieve_line_as_string()
+    {
+        std::string result;
+        std::string str(peek(), readable_bytes());
+        size_t lfIdx = str.find('\n');
+        if(lfIdx != std::string::npos)
+        {
+            result = str.substr(0, lfIdx);
+            retrieve(lfIdx);
+        }
+
+        return result;
+    }
+
+
     void append(const std::string &str)
     {
         append(str.data(), str.length());

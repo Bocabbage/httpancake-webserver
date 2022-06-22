@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
+#include <unordered_map>
 #include "TcpServer.hpp"
 #include "httpTcpConnection.hpp"
 
 using std::string;
+using std::unordered_map;
 class EventLoop;
 class Buffer;
 
@@ -25,7 +27,9 @@ public:
 
 private:
 
-    // void parseRequest(const string &requestLine);
+    // parse function
+    void parseRequestStartLine(string &&requestLine, HttpTcpConnection* httpConnPtr);
+    void parseHeader(string &&headerLine, unordered_map<string, string>& headerContents);
 
     // call-back
     void onConnection(const TcpConnectionPtr&);

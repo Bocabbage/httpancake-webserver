@@ -8,7 +8,10 @@ HttpTcpConnection::HttpTcpConnection(
 TcpConnection(lp, name, sockfd, hostAddr, hostPort, peerAddr, peerPort),
 processState_(PARSE_URL),
 requestType_(NULL_METHOD),
-mimeType_("default")
+mimeType_("default"),
+httpVersion_(HTTP1_0),
+URL_(),
+keepAlive_(false)
 {
 
 }
