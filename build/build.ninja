@@ -92,49 +92,49 @@ build cmake_object_order_depends_target_network: phony || cmake_object_order_dep
 build networklib/CMakeFiles/network.dir/Acceptor.cpp.o: CXX_COMPILER__network ../src/network/Acceptor.cpp || cmake_object_order_depends_target_network
   DEP_FILE = networklib/CMakeFiles/network.dir/Acceptor.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../src/network/../reactor
+  INCLUDES = -I../src/network/../reactor -I../src/network/../logging
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
 
 build networklib/CMakeFiles/network.dir/Buffer.cpp.o: CXX_COMPILER__network ../src/network/Buffer.cpp || cmake_object_order_depends_target_network
   DEP_FILE = networklib/CMakeFiles/network.dir/Buffer.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../src/network/../reactor
+  INCLUDES = -I../src/network/../reactor -I../src/network/../logging
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
 
 build networklib/CMakeFiles/network.dir/Socket.cpp.o: CXX_COMPILER__network ../src/network/Socket.cpp || cmake_object_order_depends_target_network
   DEP_FILE = networklib/CMakeFiles/network.dir/Socket.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../src/network/../reactor
+  INCLUDES = -I../src/network/../reactor -I../src/network/../logging
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
 
 build networklib/CMakeFiles/network.dir/socketUtils.cpp.o: CXX_COMPILER__network ../src/network/socketUtils.cpp || cmake_object_order_depends_target_network
   DEP_FILE = networklib/CMakeFiles/network.dir/socketUtils.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../src/network/../reactor
+  INCLUDES = -I../src/network/../reactor -I../src/network/../logging
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
 
 build networklib/CMakeFiles/network.dir/TcpConnection.cpp.o: CXX_COMPILER__network ../src/network/TcpConnection.cpp || cmake_object_order_depends_target_network
   DEP_FILE = networklib/CMakeFiles/network.dir/TcpConnection.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../src/network/../reactor
+  INCLUDES = -I../src/network/../reactor -I../src/network/../logging
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
 
 build networklib/CMakeFiles/network.dir/httpTcpConnection.cpp.o: CXX_COMPILER__network ../src/network/httpTcpConnection.cpp || cmake_object_order_depends_target_network
   DEP_FILE = networklib/CMakeFiles/network.dir/httpTcpConnection.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../src/network/../reactor
+  INCLUDES = -I../src/network/../reactor -I../src/network/../logging
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
 
 build networklib/CMakeFiles/network.dir/TcpServer.cpp.o: CXX_COMPILER__network ../src/network/TcpServer.cpp || cmake_object_order_depends_target_network
   DEP_FILE = networklib/CMakeFiles/network.dir/TcpServer.cpp.o.d
   FLAGS = -g   -g
-  INCLUDES = -I../src/network/../reactor
+  INCLUDES = -I../src/network/../reactor -I../src/network/../logging
   OBJECT_DIR = networklib/CMakeFiles/network.dir
   OBJECT_FILE_DIR = networklib/CMakeFiles/network.dir
 

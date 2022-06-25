@@ -1,4 +1,5 @@
 include_directories("../reactor")
+include_directories("../logging")
 
 set(
     network_SRCS

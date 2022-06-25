@@ -73,6 +73,17 @@ void TcpConnection::shutdown()
     }
 }
 
+void TcpConnection::forceClose()
+{
+    if(state_ == CONNECTED)
+    {   
+        // LOG << "[" << connName_ << "] forceClose."; 
+        lp_->runInLoop(
+            std::bind(&TcpConnection::handleClose, this)
+        );
+    }
+}
+
 void TcpConnection::connectEstablished()
 {
     if(state_ != CONNECTING)
@@ -89,9 +100,11 @@ void TcpConnection::connectDestroyed()
 {
     if(state_ != CONNECTING && state_ != CONNECTED)
     {
-        printf("connectionDestroyed faild: state != CONNECTING/CONNECTED\n");
-        printf("state = %d\n", state_);
-        exit(-1);
+        // printf("connectionDestroyed faild: state != CONNECTING/CONNECTED\n");
+        // printf("state = %d\n", state_);
+        // exit(-1);
+        // LOG << "ERROR: connectDestroyed(): remove disconnected of ["
+        //     << name() << "]"; 
     }
     setState(DISCONNECTED);
     handler_->disableAll();
@@ -110,8 +123,7 @@ void TcpConnection::handleRead()
     }
     else if(n == 0)
     {
-        // for debug
-        printf("handleRead: n == 0\n");
+        // LOG << connName_ << ": close in handleRead";
         handleClose();
     }
     else

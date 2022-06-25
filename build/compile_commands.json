@@ -1,43 +1,43 @@
 [
 {
   "directory": "/home/zhangzf/httpancake/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/Acceptor.cpp.o -c /home/zhangzf/httpancake/src/network/Acceptor.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor -I../src/network/../logging  -g   -g -o networklib/CMakeFiles/network.dir/Acceptor.cpp.o -c /home/zhangzf/httpancake/src/network/Acceptor.cpp",
   "file": "/home/zhangzf/httpancake/src/network/Acceptor.cpp"
 },
 
 {
   "directory": "/home/zhangzf/httpancake/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/Buffer.cpp.o -c /home/zhangzf/httpancake/src/network/Buffer.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor -I../src/network/../logging  -g   -g -o networklib/CMakeFiles/network.dir/Buffer.cpp.o -c /home/zhangzf/httpancake/src/network/Buffer.cpp",
   "file": "/home/zhangzf/httpancake/src/network/Buffer.cpp"
 },
 
 {
   "directory": "/home/zhangzf/httpancake/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/Socket.cpp.o -c /home/zhangzf/httpancake/src/network/Socket.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor -I../src/network/../logging  -g   -g -o networklib/CMakeFiles/network.dir/Socket.cpp.o -c /home/zhangzf/httpancake/src/network/Socket.cpp",
   "file": "/home/zhangzf/httpancake/src/network/Socket.cpp"
 },
 
 {
   "directory": "/home/zhangzf/httpancake/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/socketUtils.cpp.o -c /home/zhangzf/httpancake/src/network/socketUtils.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor -I../src/network/../logging  -g   -g -o networklib/CMakeFiles/network.dir/socketUtils.cpp.o -c /home/zhangzf/httpancake/src/network/socketUtils.cpp",
   "file": "/home/zhangzf/httpancake/src/network/socketUtils.cpp"
 },
 
 {
   "directory": "/home/zhangzf/httpancake/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/TcpConnection.cpp.o -c /home/zhangzf/httpancake/src/network/TcpConnection.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor -I../src/network/../logging  -g   -g -o networklib/CMakeFiles/network.dir/TcpConnection.cpp.o -c /home/zhangzf/httpancake/src/network/TcpConnection.cpp",
   "file": "/home/zhangzf/httpancake/src/network/TcpConnection.cpp"
 },
 
 {
   "directory": "/home/zhangzf/httpancake/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/httpTcpConnection.cpp.o -c /home/zhangzf/httpancake/src/network/httpTcpConnection.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor -I../src/network/../logging  -g   -g -o networklib/CMakeFiles/network.dir/httpTcpConnection.cpp.o -c /home/zhangzf/httpancake/src/network/httpTcpConnection.cpp",
   "file": "/home/zhangzf/httpancake/src/network/httpTcpConnection.cpp"
 },
 
 {
   "directory": "/home/zhangzf/httpancake/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor  -g   -g -o networklib/CMakeFiles/network.dir/TcpServer.cpp.o -c /home/zhangzf/httpancake/src/network/TcpServer.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I../src/network/../reactor -I../src/network/../logging  -g   -g -o networklib/CMakeFiles/network.dir/TcpServer.cpp.o -c /home/zhangzf/httpancake/src/network/TcpServer.cpp",
   "file": "/home/zhangzf/httpancake/src/network/TcpServer.cpp"
 },
 

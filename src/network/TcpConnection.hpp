@@ -34,6 +34,7 @@ public:
 
     void send(const string& msg);
     void shutdown();
+    void forceClose();
 // should be called only once
 // called by TcpServer
     void connectEstablished();

@@ -2,13 +2,11 @@
 #include "EventLoop.hpp"
 #include <sys/epoll.h>
 
-const int Handler::readEvent_ = EPOLLIN | EPOLLPRI | EPOLLRDHUP;
+const int Handler::readEvent_ = EPOLLIN | EPOLLPRI;
 const int Handler::writeEvent_ = EPOLLOUT;
-const int Handler::closeEvent_ = EPOLLHUP;
-const int Handler::errorEvent_ = EPOLLERR;
 
 Handler::Handler(int fd, EventLoop* lp):
-fd_(fd), ownerLp_(lp), events_(0), revents_(0)
+fd_(fd), ownerLp_(lp), state_(HANDLER_NEW), events_(0), revents_(0)
 {  }
 
 Handler::~Handler()
@@ -16,22 +14,17 @@ Handler::~Handler()
 
 void Handler::handleEvents()
 {
-    if((revents_ & errorEvent_) && errorCb_)
+    if((revents_ & EPOLLHUP) && !(revents_ & EPOLLIN) && closeCb_)
+        closeCb_();
+
+    if((revents_ & EPOLLERR) && errorCb_)
         errorCb_();
     
-    if((revents_ & readEvent_) && readCb_)
+    if((revents_ & (EPOLLIN | EPOLLPRI | EPOLLHUP)) && readCb_)
         readCb_();
     
-    if((revents_ & writeEvent_) && writeCb_)
+    if((revents_ & EPOLLOUT) && writeCb_)
         writeCb_();
-    
-    if((revents_ & closeEvent_) && closeCb_)
-    {
-        // for debug
-        printf("close events: %d\n", revents_);
-
-        closeCb_();
-    }
 }
 
 void Handler::update()

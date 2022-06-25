@@ -31,12 +31,12 @@ private:
     void parseRequestStartLine(string &&requestLine, HttpTcpConnection* httpConnPtr);
     void parseHeader(string &&headerLine, unordered_map<string, string>& headerContents);
 
+    void responseToGet(HttpTcpConnection* httpConnPtr);
+    void responseToPost(HttpTcpConnection* httpConnPtr);
+
     // call-back
     void onConnection(const TcpConnectionPtr&);
     void onMessage(const TcpConnectionPtr&, Buffer*);
-
-    // reponse for GET-method request
-    void responseToGet(const string& filePath, const TcpConnectionPtr& conn, bool keepAlive);
 
     TcpServer server_;
     string fileDir_;    // directory that static-files located in

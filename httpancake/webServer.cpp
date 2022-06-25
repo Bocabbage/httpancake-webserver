@@ -1,9 +1,11 @@
+#include "EventLoop.hpp"
 #include "webServer.hpp"
 #include "Buffer.hpp"
 #include "Logger.hpp"
 #include <functional>
 #include <string.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <iostream>
@@ -72,6 +74,8 @@ void webServer::onMessage(const TcpConnectionPtr& conn, Buffer *inBuffer)
             LOG << "Connection Error: " << conn->name().c_str() << "\tREQUEST-LINE-ERROR";
             httpConnPtr->setProcessState(PROCESS_FAILED);
         }
+        else
+            httpConnPtr->setProcessState(PARSE_HEADERS);
     }
 
     // 2. Header-parsing
@@ -102,103 +106,52 @@ void webServer::onMessage(const TcpConnectionPtr& conn, Buffer *inBuffer)
     // 3. Body-parsing
     if(httpConnPtr->state() == PARSE_BODY)
     {
+        // Current version: ignore the whole body
+        // Should be implemented for 'POST-method' later
+        string headerLine = inBuffer->peek_line();
+        while(!headerLine.empty())
+        {
+            // DIRTY!
+            if(headerLine.find("HTTP/") != string::npos)
+                break;
+            else
+                inBuffer->retrieve(headerLine.size());
+        }
 
+        httpConnPtr->setProcessState(RESPONSING);
     }
 
     // 4. responsing
     if(httpConnPtr->state() == RESPONSING)
     {
+        switch(httpConnPtr->requestType())
+        {
+            case GET_METHOD:
+                responseToGet(httpConnPtr);
+                break;
+            
+            case POST_METHOD:
+                responseToPost(httpConnPtr);
+                break;
+        }
 
     }
 
     // 5. success-or-failed
+    bool keepAliveState = httpConnPtr->keepAlive();
     if(httpConnPtr->state() == PROCESS_SUCCESS)
     {
-
+        if(httpConnPtr->requestType() == GET_METHOD)
+            LOG << "onMessage(): [" << conn->name().c_str() << "] get: " << httpConnPtr->url() << " successfully.";     
     }
     else if(httpConnPtr->state() == PROCESS_FAILED)
     {
-
+        LOG << "onMessage(): [" << conn->name().c_str() << "] request: " << httpConnPtr->url() << " failed.";
     }
+    httpConnPtr->clearState();
+    if(!keepAliveState)
+        conn->forceClose();
 
-
-    // string requestMsg(inBuffer->retrieve_as_string());
-    // size_t requestLineEndIdx = requestMsg.find('\n');
-    // without complete requestLine
-    // if(requestLineEndIdx == string::npos)
-    // {
-    //     inBuffer->append(requestMsg);
-    //     return;
-    // }
-    
-    // string requestLine = requestMsg.substr(0, requestLineEndIdx);
-
-
-    // size_t firstSpaceIdx = requestLine.find(' ');
-    // string method = requestLine.substr(0, firstSpaceIdx);
-    // // 1. parse the request-method
-    // if(method == "GET") 
-    // {
-    //     // 2. parse the request-obj
-    //     size_t secondSpaceIdx = requestLine.find(' ', firstSpaceIdx + 1);
-    //     string filePath = fileDir_ + requestLine.substr(firstSpaceIdx + 1, secondSpaceIdx - firstSpaceIdx - 1);
-
-    //     bool keepAlive = false;
-    //     // DIRTY: wait to be optimized
-    //     if(requestMsg.find("Keep-Alive") != string::npos || requestMsg.find("keep-alive") != string::npos)
-    //         keepAlive = true;
-
-    //     // 3. construct the response
-    //     responseToGet(filePath, conn, keepAlive);
-    // }
-    
-}
-
-void webServer::responseToGet(const string& filePath, const TcpConnectionPtr& conn, bool keepAlive=false)
-{
-    // for debug
-    std::cout << "Request filePath: " << filePath << std::endl;
-
-    struct stat fstat;
-    bzero(&fstat, sizeof(fstat));
-    if(lstat(filePath.c_str(), &fstat) < 0 && errno == ENOENT)
-    {
-        std::cout << "Find Source file failed" << std::endl;
-
-        // source not exist
-        static const string notFoundResponseLine("HTTP/1.0 404 Not Found\n");
-        static const string notFoundResponseHeader("Content-type: text/html\nContent-Length: 44\n\n");
-        static const string notFoundMsg("<html>\nNo such file.\n</html>\n");
-
-        conn->send(notFoundResponseLine + notFoundResponseHeader + notFoundMsg);
-    }
-    else
-    {
-        size_t fileSz = fstat.st_size;
-
-        std::cout << conn->name() << " : Find Source file, file-sz: " << fileSz << std::endl;
-
-        static const string successResponseLine("HTTP/1.0 200 OK\n");
-        string successResponseHeader("Content-type: text/html\nContent-Length: ");
-        successResponseHeader += to_string(fileSz);
-        // HTTP1.0 + keep-alive option
-        if(keepAlive)
-            successResponseHeader += "\nConnection: keep-alive";
-        successResponseHeader += "\n\n";
-
-        // read the file into mem
-        int requestFd = open(filePath.c_str(), O_RDONLY);
-        void *fileMap = mmap(
-            NULL, fileSz, PROT_READ, MAP_PRIVATE, requestFd, 0
-        );
-
-        string successResponseMsg((char *)fileMap, fileSz);
-
-        munmap(fileMap, fileSz);
-
-        // send response msg
-        conn->send(successResponseLine + successResponseHeader + successResponseMsg);
-    }
 }
 
 void webServer::parseRequestStartLine(string &&requestLine, HttpTcpConnection* httpConnPtr)
@@ -206,9 +159,9 @@ void webServer::parseRequestStartLine(string &&requestLine, HttpTcpConnection* h
     do
     {
         // Parse request-method
-        if(requestLine.find("GET"))
+        if(requestLine.find("GET") != string::npos)
             httpConnPtr->setRequestType(GET_METHOD);
-        else if(requestLine.find("POST"))
+        else if(requestLine.find("POST") != string::npos)
             httpConnPtr->setRequestType(POST_METHOD);
         else
         {
@@ -232,8 +185,10 @@ void webServer::parseRequestStartLine(string &&requestLine, HttpTcpConnection* h
             break;
         }
 
-        httpConnPtr->setURL(fileDir_ + requestLine.substr(firstSpaceIdx + 1, secondSpaceIdx - firstSpaceIdx - 1));
-
+        string fileURL = fileDir_ + requestLine.substr(firstSpaceIdx + 1, secondSpaceIdx - firstSpaceIdx - 1);
+        size_t suffixIdx = fileURL.find_last_of('.');
+        httpConnPtr->setMimeType(fileURL.substr(suffixIdx, fileURL.length() - suffixIdx));
+        httpConnPtr->setURL(std::move(fileURL));
 
         // Parse HTTP-type
         if(requestLine.find("HTTP/1.1"))
@@ -247,7 +202,7 @@ void webServer::parseRequestStartLine(string &&requestLine, HttpTcpConnection* h
 
 }
 
-void parseHeader(string &&headerLine, unordered_map<string, string>& headerContents)
+void webServer::parseHeader(string &&headerLine, unordered_map<string, string>& headerContents)
 {
     size_t keyValDivIdx = headerLine.find(':');
     // silently return if the headerLine has no ':'
@@ -264,4 +219,60 @@ void parseHeader(string &&headerLine, unordered_map<string, string>& headerConte
     string val = headerLine.substr(keyValDivIdx+1, key.length() - keyValDivIdx - 1);
 
     headerContents.insert({key, val});
+}
+
+void webServer::responseToGet(HttpTcpConnection* httpConnPtr)
+{
+    string filePath = httpConnPtr->url();
+    struct stat fstat;
+    bzero(&fstat, sizeof(fstat));
+    if(lstat(filePath.c_str(), &fstat) < 0 && errno == ENOENT)
+    {
+        std::cout << "Find Source file failed" << std::endl;
+
+        // source not exist
+        static const string notFoundResponseLine("HTTP/1.0 404 Not Found\n");
+        static const string notFoundResponseHeader("Content-type: text/html\nContent-Length: 44\n\n");
+        static const string notFoundMsg("<html>\nNo such file.\n</html>\n");
+
+        httpConnPtr->send(notFoundResponseLine + notFoundResponseHeader + notFoundMsg);
+        httpConnPtr->setProcessState(PROCESS_FAILED);
+    }
+    else
+    {
+        size_t fileSz = fstat.st_size;
+
+        static const string successResponseLine("HTTP/1.0 200 OK\n");
+        string successResponseHeader("Content-type: ");
+        successResponseHeader += httpConnPtr->mimeType();
+        successResponseHeader += "\nContent-Length: ";
+        successResponseHeader += to_string(fileSz);
+        // HTTP1.0 + keep-alive option
+        if(httpConnPtr->keepAlive())
+            successResponseHeader += "\nConnection: keep-alive";
+        else
+            successResponseHeader += "\nConnection: close";
+        successResponseHeader += "\n\n";
+
+        // read the file into mem
+        int requestFd = open(filePath.c_str(), O_RDONLY);
+        void *fileMap = mmap(
+            NULL, fileSz, PROT_READ, MAP_SHARED, requestFd, 0
+        );
+        close(requestFd);
+
+        char *fileMapAddr = static_cast<char*>(fileMap);
+        string successResponseMsg(fileMapAddr, fileSz);
+
+        munmap(fileMap, fileSz);
+
+        // send response msg
+        httpConnPtr->send(successResponseLine + successResponseHeader + successResponseMsg);
+        httpConnPtr->setProcessState(PROCESS_SUCCESS);
+    }
+}
+
+void webServer::responseToPost(HttpTcpConnection* httpConnPtr)
+{
+
 }

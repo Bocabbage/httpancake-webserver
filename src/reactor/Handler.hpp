@@ -3,6 +3,8 @@
 
 class EventLoop;
 
+enum HandlerState { HANDLER_NEW=-1, HANDLER_USING, HANDLER_DELETED };
+
 class Handler
 {
     using EventCallback = std::function<void()>;
@@ -34,6 +36,12 @@ public:
     int events() const
     { return events_; }
 
+    HandlerState state() const 
+    { return state_; }
+
+
+    void setState(HandlerState hs) 
+    { state_ = hs; }
 
     /* Enable/Disable events */
     void enableReading()
@@ -49,6 +57,7 @@ public:
 
     /* event-state check */
     bool isWriting() const { return events_ & writeEvent_; }
+    bool isNoneEvents() const { return events_ == 0; }
 
     void handleEvents();
 
@@ -57,12 +66,11 @@ private:
 
     static const int readEvent_;
     static const int writeEvent_;
-    static const int closeEvent_;
-    static const int errorEvent_;
 
     int fd_;
     int events_;
     int revents_;
+    HandlerState state_;
     EventCallback readCb_;
     EventCallback writeCb_;
     EventCallback closeCb_;

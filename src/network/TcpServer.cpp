@@ -1,8 +1,10 @@
+#include "Logger.hpp"
 #include "TcpServer.hpp"
 #include "EventLoop.hpp"
 #include "Acceptor.hpp"
 #include "TcpConnection.hpp"
 #include "httpTcpConnection.hpp"
+#include <sstream>
 #include <arpa/inet.h>
 #include <string.h>
 
@@ -90,13 +92,15 @@ void TcpServer::handleNewConnection(int sockfd, const string &peerAddr, uint16_t
     hostAddr.append(buff);
     hostPort = ::ntohs(localAddr.sin_port);
 
+// Create connName
+    // std::stringstream ss;
+    // ss << hostAddr << ":" << hostPort << " <--> " << peerAddr << ":" << peerPort;
+    // string connName(ss.str());
+
 
 // Create new TcpConnection obj, set the callback
     EventLoop* workLp = lpThreadPool_.getNextLoop();
 
-    // TcpConnectionPtr conn = std::make_shared<TcpConnection>(
-    //     workLp, connName, sockfd, hostAddr, hostPort, peerAddr, peerPort 
-    // );
     TcpConnectionPtr conn = createConnection(
         connType_, 
         workLp, connName, sockfd, hostAddr, hostPort, peerAddr, peerPort
@@ -120,17 +124,6 @@ void TcpServer::handleNewConnection(int sockfd, const string &peerAddr, uint16_t
 
 void TcpServer::handleRemoveConnection(const TcpConnectionPtr& connPtr)
 {
-    // size_t n = connections_.erase(connPtr->name());
-    // if(n != 1)
-    // {
-    //     printf("TcpServer: handleRemoveConnection faild: n = %lu\n", n);
-    //     exit(-1);
-    // }
-
-    // Must be put into pendingQueue
-    // lp_->queueInLoop(
-    //     std::bind(&TcpConnection::connectDestroyed, connPtr)
-    // );
     lp_->runInLoop(
         std::bind(&TcpServer::handleRemoveConnectionInLoop, this, connPtr)
     );
@@ -141,12 +134,17 @@ void TcpServer::handleRemoveConnectionInLoop(const TcpConnectionPtr& connPtr)
     EventLoop *workLp = connPtr->getLoop();
     // remove from connections_ in mainLoop
     size_t n = connections_.erase(connPtr->name());
-    if(n != 1)
-    {
-        printf("TcpServer: handleRemoveConnection faild: n = %lu\n", n);
-        exit(-1);
-    }
-    workLp->runInLoop(
+    // if(n != 1)
+    // {
+    //     // printf("TcpServer: handleRemoveConnection failed: n = %lu\n", n);
+    //     // printf("connName: %s\n",connPtr->name().c_str());
+    //     // printf("Now connection size: %u\n", connections_.size());
+    //     // exit(-1);
+    //     LOG << "ERROR: handleRemoveConnectionInLoop(): n =" << n <<" from remove ["
+    //         << connPtr->name() << "]"; 
+    // }
+    assert(n == 1);
+    workLp->queueInLoop(
         std::bind(&TcpConnection::connectDestroyed, connPtr)
     );
 }

@@ -55,6 +55,18 @@ public:
 
     const char* peek() const { return begin() + reader_idx_; }
 
+    // Add by Zhuofan Zhang
+    std::string peek_line() const 
+    {
+        std::string result;
+        std::string str(peek(), readable_bytes());
+        size_t lfIdx = str.find('\n');
+        if(lfIdx != std::string::npos)
+            result = str.substr(0, lfIdx);
+
+        return result;
+    }
+
     void retrieve(size_t len)
     {
         // 前端被读走 len 字节

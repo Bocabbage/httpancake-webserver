@@ -56,10 +56,19 @@ public:
 
     void setProcessState(ProcessState s) { processState_ = s; }
     void setRequestType(RequestType rt) { requestType_ = rt; }
-    void setMimeType(const string& ms) { mimeType_ = ms; }
     void setHttpVersion(HttpVersion hv) { httpVersion_ = hv; }
     void setURL(const string& url) { URL_ = url; }
     void setKeepAlive(bool ka) { keepAlive_ = ka; }
+    void clearState();
+    void setMimeType(const string& ms) 
+    { 
+        if(MimeTypes.find(ms) != MimeTypes.end())
+        {
+            mimeType_ = MimeTypes.at(ms);
+        }
+        else
+            mimeType_ = MimeTypes.at("default");
+    }
 
     ProcessState state() const { return processState_; }
     RequestType requestType() const { return requestType_; }

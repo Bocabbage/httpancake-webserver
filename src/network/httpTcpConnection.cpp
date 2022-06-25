@@ -16,5 +16,15 @@ keepAlive_(false)
 
 }
 
+void HttpTcpConnection::clearState()
+{
+    processState_ = PARSE_URL;
+    requestType_ = NULL_METHOD;
+    mimeType_ = "default";
+    httpVersion_ = HTTP1_0;
+    URL_.clear();
+    keepAlive_ = false;
+}
+
 HttpTcpConnection::~HttpTcpConnection()
 {  }
