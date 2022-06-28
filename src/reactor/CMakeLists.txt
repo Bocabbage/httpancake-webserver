@@ -5,6 +5,9 @@ set(
     EventLoopThreadPool.cpp
     Handler.cpp
     Poller.cpp
+    Timer.cpp
+    TimerQueue.cpp
+    Timestamp.cpp
 )
 
 add_library(reactor STATIC ${reactor_SRCS})

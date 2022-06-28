@@ -73,6 +73,24 @@
 
 {
   "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o reactorlib/CMakeFiles/reactor.dir/Timer.cpp.o -c /home/zhangzf/httpancake/src/reactor/Timer.cpp",
+  "file": "/home/zhangzf/httpancake/src/reactor/Timer.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o reactorlib/CMakeFiles/reactor.dir/TimerQueue.cpp.o -c /home/zhangzf/httpancake/src/reactor/TimerQueue.cpp",
+  "file": "/home/zhangzf/httpancake/src/reactor/TimerQueue.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o reactorlib/CMakeFiles/reactor.dir/Timestamp.cpp.o -c /home/zhangzf/httpancake/src/reactor/Timestamp.cpp",
+  "file": "/home/zhangzf/httpancake/src/reactor/Timestamp.cpp"
+},
+
+{
+  "directory": "/home/zhangzf/httpancake/build",
   "command": "/bin/x86_64-linux-gnu-g++-9    -g   -g -o logginglib/CMakeFiles/logging.dir/LogStream.cpp.o -c /home/zhangzf/httpancake/src/logging/LogStream.cpp",
   "file": "/home/zhangzf/httpancake/src/logging/LogStream.cpp"
 },

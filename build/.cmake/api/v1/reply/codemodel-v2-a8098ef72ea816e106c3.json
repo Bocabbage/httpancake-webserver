@@ -1,0 +1,224 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "networklib",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src/network",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "reactorlib",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src/reactor",
+					"targetIndexes" : 
+					[
+						7
+					]
+				},
+				{
+					"build" : "logginglib",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src/logging",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "test-bin",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "tests",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						6,
+						8,
+						9,
+						10
+					]
+				},
+				{
+					"build" : "bin",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "httpancake",
+					"targetIndexes" : 
+					[
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					],
+					"name" : "httpancake",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 4,
+					"id" : "LoggerTest::@6f38b55a8797ddbf6fca",
+					"jsonFile" : "target-LoggerTest-Debug-a10356bd3748a80af7e6.json",
+					"name" : "LoggerTest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "discard::@6f38b55a8797ddbf6fca",
+					"jsonFile" : "target-discard-Debug-a4db948ebd68f0f81070.json",
+					"name" : "discard",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "echo::@6f38b55a8797ddbf6fca",
+					"jsonFile" : "target-echo-Debug-f46dcd8f97105af55373.json",
+					"name" : "echo",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "httpancake::@90a2315b7a9c97cd24d2",
+					"jsonFile" : "target-httpancake-Debug-d5368a3e28e047fceb14.json",
+					"name" : "httpancake",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "logging::@53e4bb40590977503e1b",
+					"jsonFile" : "target-logging-Debug-c469fa2801e081b6c66c.json",
+					"name" : "logging",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "network::@d0f849f324e2c9cd2c20",
+					"jsonFile" : "target-network-Debug-55cac2911c4da0d1dbe7.json",
+					"name" : "network",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "nonBlockingLogTest::@6f38b55a8797ddbf6fca",
+					"jsonFile" : "target-nonBlockingLogTest-Debug-3977f5da6275fb95e059.json",
+					"name" : "nonBlockingLogTest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "reactor::@699a4be7e073df108615",
+					"jsonFile" : "target-reactor-Debug-ecdb3aa48907fecf0397.json",
+					"name" : "reactor",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "reactorTest1::@6f38b55a8797ddbf6fca",
+					"jsonFile" : "target-reactorTest1-Debug-623073d54cc7d7646d95.json",
+					"name" : "reactorTest1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "simpleWebServer::@6f38b55a8797ddbf6fca",
+					"jsonFile" : "target-simpleWebServer-Debug-f2f6ef9f9031eccd3234.json",
+					"name" : "simpleWebServer",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "threadIdentityTest::@6f38b55a8797ddbf6fca",
+					"jsonFile" : "target-threadIdentityTest-Debug-3e7e0e7c467c36205ab0.json",
+					"name" : "threadIdentityTest",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/zhangzf/httpancake/build",
+		"source" : "/home/zhangzf/httpancake"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

@@ -221,6 +221,24 @@ build reactorlib/CMakeFiles/reactor.dir/Poller.cpp.o: CXX_COMPILER__reactor ../s
   OBJECT_DIR = reactorlib/CMakeFiles/reactor.dir
   OBJECT_FILE_DIR = reactorlib/CMakeFiles/reactor.dir
 
+build reactorlib/CMakeFiles/reactor.dir/Timer.cpp.o: CXX_COMPILER__reactor ../src/reactor/Timer.cpp || cmake_object_order_depends_target_reactor
+  DEP_FILE = reactorlib/CMakeFiles/reactor.dir/Timer.cpp.o.d
+  FLAGS = -g   -g
+  OBJECT_DIR = reactorlib/CMakeFiles/reactor.dir
+  OBJECT_FILE_DIR = reactorlib/CMakeFiles/reactor.dir
+
+build reactorlib/CMakeFiles/reactor.dir/TimerQueue.cpp.o: CXX_COMPILER__reactor ../src/reactor/TimerQueue.cpp || cmake_object_order_depends_target_reactor
+  DEP_FILE = reactorlib/CMakeFiles/reactor.dir/TimerQueue.cpp.o.d
+  FLAGS = -g   -g
+  OBJECT_DIR = reactorlib/CMakeFiles/reactor.dir
+  OBJECT_FILE_DIR = reactorlib/CMakeFiles/reactor.dir
+
+build reactorlib/CMakeFiles/reactor.dir/Timestamp.cpp.o: CXX_COMPILER__reactor ../src/reactor/Timestamp.cpp || cmake_object_order_depends_target_reactor
+  DEP_FILE = reactorlib/CMakeFiles/reactor.dir/Timestamp.cpp.o.d
+  FLAGS = -g   -g
+  OBJECT_DIR = reactorlib/CMakeFiles/reactor.dir
+  OBJECT_FILE_DIR = reactorlib/CMakeFiles/reactor.dir
+
 
 # =============================================================================
 # Link build statements for STATIC_LIBRARY target reactor
@@ -229,7 +247,7 @@ build reactorlib/CMakeFiles/reactor.dir/Poller.cpp.o: CXX_COMPILER__reactor ../s
 #############################################
 # Link the static library reactorlib/libreactor.a
 
-build reactorlib/libreactor.a: CXX_STATIC_LIBRARY_LINKER__reactor reactorlib/CMakeFiles/reactor.dir/EventLoop.cpp.o reactorlib/CMakeFiles/reactor.dir/EventLoopThread.cpp.o reactorlib/CMakeFiles/reactor.dir/EventLoopThreadPool.cpp.o reactorlib/CMakeFiles/reactor.dir/Handler.cpp.o reactorlib/CMakeFiles/reactor.dir/Poller.cpp.o
+build reactorlib/libreactor.a: CXX_STATIC_LIBRARY_LINKER__reactor reactorlib/CMakeFiles/reactor.dir/EventLoop.cpp.o reactorlib/CMakeFiles/reactor.dir/EventLoopThread.cpp.o reactorlib/CMakeFiles/reactor.dir/EventLoopThreadPool.cpp.o reactorlib/CMakeFiles/reactor.dir/Handler.cpp.o reactorlib/CMakeFiles/reactor.dir/Poller.cpp.o reactorlib/CMakeFiles/reactor.dir/Timer.cpp.o reactorlib/CMakeFiles/reactor.dir/TimerQueue.cpp.o reactorlib/CMakeFiles/reactor.dir/Timestamp.cpp.o
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = reactorlib/CMakeFiles/reactor.dir
   POST_BUILD = :

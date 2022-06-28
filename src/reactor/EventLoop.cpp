@@ -1,6 +1,7 @@
 #include "EventLoop.hpp"
 #include "Poller.hpp"
 #include "Handler.hpp"
+#include "TimerQueue.hpp"
 #include <sys/eventfd.h>
 #include <unistd.h>
 
@@ -8,8 +9,9 @@ EventLoop::EventLoop():
 stopLoop_(true),
 callingPendingunctors_(false),
 wakeupFd_(::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC)),
-wakeupHandler_(new Handler(wakeupFd_, this)),
-poller_(new Poller(this)), // use factory-func?
+wakeupHandler_(std::make_unique<Handler>(wakeupFd_, this)),
+poller_(std::make_unique<Poller>(this)), // use factory-func?
+timerQueue_(std::make_unique<TimerQueue>(this)),
 tid_(std::this_thread::get_id())
 {
     wakeupHandler_->setReadCallback(std::bind(&EventLoop::handleWakeup, this));
@@ -49,11 +51,6 @@ void EventLoop::queueInLoop(const InLoopFunction &f)
 
     if(!isInLoopThread() || callingPendingunctors_)
     {
-        // for debug
-        // if(!isInLoopThread())
-        // {
-        //     printf("Call from other thread.\n");
-        // }
         wakeup();
     }
 }
@@ -116,5 +113,22 @@ void EventLoop::stopLoop()
     stopLoop_ = true;
     if(!isInLoopThread())
         wakeup();
+}
+
+TimerId EventLoop::runAt(const Timestamp& time, const TimerCallback& cb)
+{
+    return timerQueue_->add_timer(cb, time, 0.0);
+}
+
+TimerId EventLoop::runAfter(double delay, const TimerCallback& cb)
+{
+    Timestamp tstamp(add_time(Timestamp::now(), delay));
+    return timerQueue_->add_timer(cb, tstamp, 0.0);
+}
+
+TimerId EventLoop::runEvery(double interval, const TimerCallback& cb)
+{
+    Timestamp tstamp(add_time(Timestamp::now(), interval));
+    return timerQueue_->add_timer(cb, tstamp, interval);
 }
 
