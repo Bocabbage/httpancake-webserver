@@ -21,13 +21,23 @@ webServer::webServer(
     EventLoop* lp, 
     const string& hostAddr, uint16_t hostPort,
     string fileDir, 
-    int threadNum
+    int threadNum,
+    int expiredSec
 ):
 server_(lp, hostAddr, hostPort, threadNum, HTTPTCPCONN),
-fileDir_(fileDir)
+fileDir_(fileDir),
+expiredSec_(expiredSec)
 {
     server_.setConnectionCallback(std::bind(&webServer::onConnection, this, _1));
     server_.setMessageCallback(std::bind(&webServer::onMessage, this, _1, _2));
+
+    // shutdown idle connections
+    if(expiredSec > 0)
+    {
+        lp->runEvery(1.0, std::bind(&webServer::onTimer, this));
+        connBuckets_.resize(expiredSec_);
+    }
+
 }
 
 void webServer::start()
@@ -36,11 +46,24 @@ void webServer::start()
     server_.start();
 }
 
+void webServer::onTimer()
+{
+    connBuckets_.push_back(Bucket());
+}
+
 void webServer::onConnection(const TcpConnectionPtr& conn)
 {
     if(conn->connected())
     {
         LOG << "onConnection(): new connection [" << conn->name().c_str() << "]";
+        // For timing
+        if(expiredSec_ > 0)
+        {
+            std::shared_ptr<Entry> entryPtr(std::make_shared<Entry>(conn));
+            connBuckets_.back().insert(entryPtr);
+            std::weak_ptr<Entry> weakEntryPtr(entryPtr);
+            conn->setContext(weakEntryPtr);
+        }   
     }
     else
     {
@@ -51,8 +74,18 @@ void webServer::onConnection(const TcpConnectionPtr& conn)
 
 void webServer::onMessage(const TcpConnectionPtr& conn, Buffer *inBuffer)
 {
+    if(expiredSec_ > 0)
+    {
+        assert(!conn->getContext().empty());
+        std::weak_ptr<Entry> weakEntryPtr(boost::any_cast<std::weak_ptr<Entry> >(conn->getContext()));
+        std::shared_ptr<Entry> entryPtr(weakEntryPtr.lock());
+        if(entryPtr)
+            connBuckets_.back().insert(entryPtr);
+    }
+
     // Remove the const: DIRTY!
-    HttpTcpConnection* httpConnPtr = static_cast<HttpTcpConnection*>(conn.get());
+    // upcasting: use dynamic-cast
+    HttpTcpConnection* httpConnPtr = dynamic_cast<HttpTcpConnection*>(conn.get());
 
     /* state-check */
     // 1. URL-parsing
@@ -231,11 +264,13 @@ void webServer::responseToGet(HttpTcpConnection* httpConnPtr)
         std::cout << "Find Source file failed" << std::endl;
 
         // source not exist
-        static const string notFoundResponseLine("HTTP/1.0 404 Not Found\n");
+        static const string notFoundResponseLine(" 404 Not Found\n");
         static const string notFoundResponseHeader("Content-type: text/html\nContent-Length: 44\n\n");
         static const string notFoundMsg("<html>\nNo such file.\n</html>\n");
 
-        httpConnPtr->send(notFoundResponseLine + notFoundResponseHeader + notFoundMsg);
+        string httpVer = httpConnPtr->httpVersion() == HTTP1_1 ? "HTTP/1.1" : "HTTP/1.0";
+
+        httpConnPtr->send(httpVer + notFoundResponseLine + notFoundResponseHeader + notFoundMsg);
         httpConnPtr->setProcessState(PROCESS_FAILED);
     }
     else

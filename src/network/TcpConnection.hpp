@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/any.hpp>
 #include <memory>
 #include <string>
 #include <vector>
@@ -31,6 +32,7 @@ public:
     bool connected() const { return state_ == CONNECTED; }
     string name() const { return connName_; }
     EventLoop* getLoop() { return lp_; }
+    const boost::any& getContext() { return context_; }
 
     void send(const string& msg);
     void shutdown();
@@ -49,6 +51,8 @@ public:
     { writeCb_ = std::move(wcb); }
     void setCloseCallback( CloseCallback ccb)
     { closeCb_ = std::move(ccb); }
+
+    void setContext(const boost::any& context) { context_ = context; }
 
 private:
     enum ConnState { CONNECTING, CONNECTED, DISCONNECTING, DISCONNECTED };
@@ -80,6 +84,9 @@ private:
 
     Buffer inputBuffer_;
     Buffer outputBuffer_;
+
+    // for extra-memo data
+    boost::any context_;
 };
 
 using TcpConnectionPtr = std::shared_ptr<TcpConnection>;

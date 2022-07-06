@@ -64,3 +64,15 @@
 4758	4814	1656429256850000000	networklib/libnetwork.a	71f5eaef2a55d176
 2481	8254	1656429260290000000	bin/CMakeFiles/httpancake.dir/webServer.cpp.o	d96ec6cd7ca30eee
 8255	8903	1656429260940000000	bin/httpancake	eff9fff9dc1c899e
+4	1676	1656487609990000000	networklib/CMakeFiles/network.dir/httpTcpConnection.cpp.o	3b4cdb1a35c71b65
+1	1865	1656487610180000000	networklib/CMakeFiles/network.dir/TcpConnection.cpp.o	26e5436f00830a35
+5	2403	1656487610720000000	bin/CMakeFiles/httpancake.dir/httPancake.cpp.o	14280947f7c45ff8
+4	2914	1656487611230000000	networklib/CMakeFiles/network.dir/TcpServer.cpp.o	119ce9c76e001fc5
+2914	2987	1656487611300000000	networklib/libnetwork.a	71f5eaef2a55d176
+5	5997	1656487614310000000	bin/CMakeFiles/httpancake.dir/webServer.cpp.o	d96ec6cd7ca30eee
+5997	6629	1656487614940000000	bin/httpancake	eff9fff9dc1c899e
+2	1496	1656487738890000000	bin/CMakeFiles/httpancake.dir/httPancake.cpp.o	14280947f7c45ff8
+2	5078	1656487742460000000	bin/CMakeFiles/httpancake.dir/webServer.cpp.o	d96ec6cd7ca30eee
+5078	5623	1656487743010000000	bin/httpancake	eff9fff9dc1c899e
+3	7875	1656493792200000000	bin/CMakeFiles/httpancake.dir/webServer.cpp.o	d96ec6cd7ca30eee
+7877	8911	1656493793240000000	bin/httpancake	eff9fff9dc1c899e
