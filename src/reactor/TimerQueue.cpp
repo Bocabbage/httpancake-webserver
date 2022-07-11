@@ -47,7 +47,7 @@ void read_timerfd(int timerfd, Timestamp now)
 {
     uint64_t howmany;
     // read将返回超时次数；设置为NONBLOCK时，若未有超时，返回EAGAIN
-    ssize_t n = ::read(timerfd, &howmany, sizeof howmany);
+    ssize_t n = ::read(timerfd, &howmany, sizeof(howmany));
 }
 
 void reset_timerfd(int timerfd, Timestamp expiration)
@@ -77,7 +77,8 @@ using namespace detail;
 
 TimerQueue::TimerQueue(EventLoop *lp):
 loop_(lp), timerfd_(create_timefd()), 
-timerfd_handler(timerfd_, loop_), timers_()
+timerfd_handler(timerfd_, loop_), timers_(),
+calling_expired_timers_(false)
 {
     // 设置队列timefd_的回调：handle_read，该回调函数会调用每个超时Timer(s)内的回调
     // ! 这步设置也会将timerfd_交给持有计时器队列的Eventloop，调用update_handler将其加入poll列表中
@@ -99,7 +100,7 @@ TimerId TimerQueue::add_timer(const TimerCallback &cb,
     Timer* timer = new Timer(cb, when, interval);
     // 通过这一间接调用，使add_timer成为线程安全的
     loop_->runInLoop(std::bind(&TimerQueue::add_timer_in_loop, this, timer));
-    return TimerId(timer);
+    return TimerId(timer, timer->sequence());
 }
 
 void TimerQueue::add_timer_in_loop(Timer *timer)
@@ -123,9 +124,13 @@ void TimerQueue::handle_read()
 
     std::vector<Entry> expired = get_expired(now);
 
+    calling_expired_timers_ = true;
+    canceling_timers_.clear();
+
     for(auto it = expired.begin(); it != expired.end(); ++it)
         it->second->run();
 
+    calling_expired_timers_ = false;
     reset(expired, now);
 }
 
@@ -155,7 +160,8 @@ void TimerQueue::reset(const std::vector<Entry> &expired, Timestamp now)
     Timestamp next_expire;
     for(auto it = expired.begin(); it != expired.end(); ++it)
     {
-        if(it->second->repeat())
+        ActiveTimer timer(it->second, it->second->sequence());
+        if(it->second->repeat() && canceling_timers_.find(timer) == canceling_timers_.end())
         {
             it->second->restart(now);
             insert(it->second);
@@ -183,9 +189,19 @@ bool TimerQueue::insert(Timer *timer)
     if(it == timers_.end() || when < it->first)
         earliest_changed = true;
     
-    std::pair<TimerList::iterator, bool> result = 
+    {
+        std::pair<TimerList::iterator, bool> result = 
         timers_.insert(std::make_pair(when, timer));
-    assert(result.second);
+        assert(result.second);
+    }
+    
+    {
+        std::pair<ActiveTimerSet::iterator, bool> result = 
+            active_timers_.insert(ActiveTimer(timer, timer->sequence()));
+        assert(result.second);
+    }
+
+    assert(timers_.size() == active_timers_.size());
     return earliest_changed;
 }
 

@@ -103,7 +103,7 @@ public:
         if(lfIdx != std::string::npos)
         {
             result = str.substr(0, lfIdx);
-            retrieve(lfIdx);
+            retrieve(lfIdx+1); // ignore the \n
         }
 
         return result;

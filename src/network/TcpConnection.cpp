@@ -17,6 +17,9 @@ state_(CONNECTING),
 hostAddr_(hostAddr), hostPort_(hostPort),
 peerAddr_(peerAddr), peerPort_(peerPort)
 {
+    // disable the Nagle's algorithm
+    // sock_->setTcpNoDelay(true);
+
     handler_->setReadCallback(
         std::bind(&TcpConnection::handleRead, this)
     );

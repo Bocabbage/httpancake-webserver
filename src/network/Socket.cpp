@@ -1,5 +1,7 @@
 #include "Socket.hpp"
 #include "socketUtils.hpp"
+#include <netinet/in.h> // IPPROTO_TCP
+#include <netinet/tcp.h> // TCP_NODELAY
 
 Socket::~Socket()
 {
@@ -24,4 +26,10 @@ int Socket::accept(string *peerAddr, uint16_t *peerPort)
 void Socket::shutdownWrite()
 {
     sockets::shutdownWrite(fd_);
+}
+
+void Socket::setTcpNoDelay(bool on)
+{
+    int optval = on ? 1 : 0;
+    ::setsockopt(fd_, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(optval));
 }

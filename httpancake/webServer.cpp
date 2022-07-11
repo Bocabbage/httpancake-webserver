@@ -48,6 +48,7 @@ void webServer::start()
 
 void webServer::onTimer()
 {
+    // LOG << "webServer::onTimer called";
     connBuckets_.push_back(Bucket());
 }
 
@@ -55,7 +56,7 @@ void webServer::onConnection(const TcpConnectionPtr& conn)
 {
     if(conn->connected())
     {
-        LOG << "onConnection(): new connection [" << conn->name().c_str() << "]";
+        // LOG << "onConnection(): new connection [" << conn->name().c_str() << "]";
         // For timing
         if(expiredSec_ > 0)
         {
@@ -67,8 +68,8 @@ void webServer::onConnection(const TcpConnectionPtr& conn)
     }
     else
     {
-        LOG << "onConnection(): connection [" << conn->name().c_str() << "] is down; "
-            << "now " << server_.connSize() << "conns.";
+        // LOG << "onConnection(): connection [" << conn->name().c_str() << "] is down; "
+        //     << "now " << server_.connSize() << "conns.";
     }
 }
 
@@ -87,104 +88,109 @@ void webServer::onMessage(const TcpConnectionPtr& conn, Buffer *inBuffer)
     // upcasting: use dynamic-cast
     HttpTcpConnection* httpConnPtr = dynamic_cast<HttpTcpConnection*>(conn.get());
 
-    /* state-check */
-    // 1. URL-parsing
-    if(httpConnPtr->state() == PARSE_URL)
+    do
     {
-       
-        string requestLine = inBuffer->retrieve_line_as_string();
-        if(requestLine.empty())
+        /* state-check */
+        // 1. URL-parsing
+        if(httpConnPtr->state() == PARSE_URL)
         {
-            httpConnPtr->setProcessState(REQUEST_LINE_ERROR);
-        }
-        else
-        {
-            parseRequestStartLine(std::move(requestLine), httpConnPtr);
-        }
-
-        if(httpConnPtr->state() == REQUEST_LINE_ERROR)
-        {
-            LOG << "Connection Error: " << conn->name().c_str() << "\tREQUEST-LINE-ERROR";
-            httpConnPtr->setProcessState(PROCESS_FAILED);
-        }
-        else
-            httpConnPtr->setProcessState(PARSE_HEADERS);
-    }
-
-    // 2. Header-parsing
-    if(httpConnPtr->state() == PARSE_HEADERS)
-    {
-        // Current version: ignore the whole header information except the 'keep-alive'
-        unordered_map<string, string> headerContents;
-
-        string headerLine = inBuffer->retrieve_line_as_string();
-        while(!headerLine.empty())
-        {
-            parseHeader(std::move(headerLine), headerContents);
-            headerLine = inBuffer->retrieve_line_as_string();
-        }
-
-        // keepAlive setting
-        if(headerContents.find("connection") != headerContents.end())
-        {
-            std::regex keepAliveRegex("keep-alive/i");
-            httpConnPtr->setKeepAlive(
-                std::regex_match(headerContents["connection"], keepAliveRegex)
-            );
-        }
-
-        httpConnPtr->setProcessState(PARSE_BODY);
-    }
-
-    // 3. Body-parsing
-    if(httpConnPtr->state() == PARSE_BODY)
-    {
-        // Current version: ignore the whole body
-        // Should be implemented for 'POST-method' later
-        string headerLine = inBuffer->peek_line();
-        while(!headerLine.empty())
-        {
-            // DIRTY!
-            if(headerLine.find("HTTP/") != string::npos)
-                break;
-            else
-                inBuffer->retrieve(headerLine.size());
-        }
-
-        httpConnPtr->setProcessState(RESPONSING);
-    }
-
-    // 4. responsing
-    if(httpConnPtr->state() == RESPONSING)
-    {
-        switch(httpConnPtr->requestType())
-        {
-            case GET_METHOD:
-                responseToGet(httpConnPtr);
-                break;
             
-            case POST_METHOD:
-                responseToPost(httpConnPtr);
-                break;
+            string requestLine = inBuffer->retrieve_line_as_string();
+            if(requestLine.empty())
+            {
+                httpConnPtr->setProcessState(REQUEST_LINE_ERROR);
+            }
+            else
+            {
+                parseRequestStartLine(std::move(requestLine), httpConnPtr);
+            }
+
+            if(httpConnPtr->state() == REQUEST_LINE_ERROR)
+            {
+                // LOG << "Connection Error: " << conn->name().c_str() << "\tREQUEST-LINE-ERROR";
+                httpConnPtr->setProcessState(PROCESS_FAILED);
+            }
+            else
+                httpConnPtr->setProcessState(PARSE_HEADERS);
         }
 
-    }
+        // 2. Header-parsing
+        if(httpConnPtr->state() == PARSE_HEADERS)
+        {
+            // Current version: ignore the whole header information except the 'keep-alive'
+            unordered_map<string, string> headerContents;
 
-    // 5. success-or-failed
-    bool keepAliveState = httpConnPtr->keepAlive();
-    if(httpConnPtr->state() == PROCESS_SUCCESS)
-    {
-        if(httpConnPtr->requestType() == GET_METHOD)
-            LOG << "onMessage(): [" << conn->name().c_str() << "] get: " << httpConnPtr->url() << " successfully.";     
-    }
-    else if(httpConnPtr->state() == PROCESS_FAILED)
-    {
-        LOG << "onMessage(): [" << conn->name().c_str() << "] request: " << httpConnPtr->url() << " failed.";
-    }
-    httpConnPtr->clearState();
-    if(!keepAliveState)
-        conn->forceClose();
+            string headerLine = inBuffer->retrieve_line_as_string();
+            while(!headerLine.empty() && headerLine[0] != '\r')
+            {
+                if(headerLine.back() == '\r')
+                    headerLine.pop_back();
+                parseHeader(std::move(headerLine), headerContents);
+                headerLine = inBuffer->retrieve_line_as_string();
+            }
 
+            // keepAlive setting
+            if(headerContents.find("connection") != headerContents.end())
+            {
+                std::regex keepAliveRegex("keep-alive", std::regex::icase);
+                httpConnPtr->setKeepAlive(
+                    std::regex_match(headerContents["connection"], keepAliveRegex)
+                );
+            }
+
+            httpConnPtr->setProcessState(PARSE_BODY);
+        }
+
+        // 3. Body-parsing
+        if(httpConnPtr->state() == PARSE_BODY)
+        {
+            // Current version: ignore the whole body
+            // Should be implemented for 'POST-method' later
+            string headerLine = inBuffer->peek_line();
+            while(!headerLine.empty())
+            {
+                // DIRTY!
+                if(headerLine.find("HTTP/") != string::npos)
+                    break;
+                else
+                    inBuffer->retrieve(headerLine.size());
+            }
+
+            httpConnPtr->setProcessState(RESPONSING);
+        }
+
+        // 4. responsing
+        if(httpConnPtr->state() == RESPONSING)
+        {
+            switch(httpConnPtr->requestType())
+            {
+                case GET_METHOD:
+                    responseToGet(httpConnPtr);
+                    break;
+                
+                case POST_METHOD:
+                    responseToPost(httpConnPtr);
+                    break;
+            }
+
+        }
+
+        // 5. success-or-failed
+        bool keepAliveState = httpConnPtr->keepAlive();
+        if(httpConnPtr->state() == PROCESS_SUCCESS)
+        {
+            if(httpConnPtr->requestType() == GET_METHOD)
+                ;
+                // LOG << "onMessage(): [" << conn->name().c_str() << "] get: " << httpConnPtr->url() << " successfully.";     
+        }
+        else if(httpConnPtr->state() == PROCESS_FAILED)
+        {
+            // LOG << "onMessage(): [" << conn->name().c_str() << "] request: " << httpConnPtr->url() << " failed.";
+        }
+        httpConnPtr->clearState();
+        if(!keepAliveState)
+            conn->forceClose();
+    }while (inBuffer->readable_bytes() != 0);
 }
 
 void webServer::parseRequestStartLine(string &&requestLine, HttpTcpConnection* httpConnPtr)
@@ -249,7 +255,8 @@ void webServer::parseHeader(string &&headerLine, unordered_map<string, string>& 
         [](unsigned char c){ return std::tolower(c); }
     );
 
-    string val = headerLine.substr(keyValDivIdx+1, key.length() - keyValDivIdx - 1);
+    // keyValDivIdx + 2: ignore ': '
+    string val = headerLine.substr(keyValDivIdx+2, key.length() - keyValDivIdx - 1);
 
     headerContents.insert({key, val});
 }

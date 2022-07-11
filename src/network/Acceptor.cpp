@@ -1,5 +1,7 @@
 #include "Acceptor.hpp"
 #include "socketUtils.hpp"
+#include <netinet/in.h> // IPPROTO_TCP
+#include <netinet/tcp.h> // TCP_NODELAY
 // #include "EventLoop.hpp"
 
 Acceptor::Acceptor(EventLoop* lp, const string &hostAddr, uint16_t hostPort):
@@ -27,6 +29,11 @@ void Acceptor::handleRead()
     string peerAddr;
     uint16_t peerPort;
     int connFd = listenSock_.accept(&peerAddr, &peerPort);
+
+    // -------- disable Nagle's algorithm ------------- // 
+    // int optval = 1;
+    // ::setsockopt(connFd, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(optval));
+
     if(connFd >= 0)
     {
         if(cb_)

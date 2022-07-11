@@ -8,7 +8,7 @@ class Socket
 
 public:
     explicit Socket(int sockfd): fd_(sockfd)
-    {  }
+    { }
     ~Socket();
 
     int fd() const { return fd_; }
@@ -16,6 +16,7 @@ public:
     void bind(string hostAddr, uint16_t port);
     int accept(string* peerAddr, uint16_t* peerPort);
 
+    void setTcpNoDelay(bool on);  // forbid the Nagle
     void shutdownWrite();
 
 private:

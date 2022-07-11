@@ -3,7 +3,20 @@
 #include "Handler.hpp"
 #include "TimerQueue.hpp"
 #include <sys/eventfd.h>
+#include <signal.h>
 #include <unistd.h>
+
+class IgnoreSigPipe
+{
+public:
+    IgnoreSigPipe()
+    {
+        ::signal(SIGPIPE, SIG_IGN);
+    }
+
+};
+
+IgnoreSigPipe initObj;
 
 EventLoop::EventLoop():
 stopLoop_(true),
