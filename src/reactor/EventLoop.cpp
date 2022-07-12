@@ -4,7 +4,7 @@
 #include "TimerQueue.hpp"
 #include <sys/eventfd.h>
 #include <signal.h>
-#include <unistd.h>
+
 
 class IgnoreSigPipe
 {
@@ -25,7 +25,7 @@ wakeupFd_(::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC)),
 wakeupHandler_(std::make_unique<Handler>(wakeupFd_, this)),
 poller_(std::make_unique<Poller>(this)), // use factory-func?
 timerQueue_(std::make_unique<TimerQueue>(this)),
-tid_(std::this_thread::get_id())
+tid_(gettid())
 {
     wakeupHandler_->setReadCallback(std::bind(&EventLoop::handleWakeup, this));
     wakeupHandler_->enableReading();

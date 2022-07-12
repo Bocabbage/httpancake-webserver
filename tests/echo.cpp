@@ -30,7 +30,7 @@ void onMessage(const TcpConnectionPtr& conn, Buffer* buf)
 
 int main()
 {
-    printf("main(): pid = %lu\n", std::this_thread::get_id());
+    printf("main(): tid = %lu\n", gettid());
     EventLoop lp;
     string ipAddr("ANY");
     TcpServer server(&lp, ipAddr, 9981, 2);

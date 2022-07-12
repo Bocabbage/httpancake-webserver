@@ -4,6 +4,7 @@
 #include <memory>
 #include <thread>
 #include <mutex>
+#include <unistd.h>
 #include "Timestamp.hpp"
 #include "TimerId.hpp"
 
@@ -31,8 +32,8 @@ public:
     void wakeup();
     void runInLoop(const InLoopFunction&);
     void queueInLoop(const InLoopFunction&);
-    bool isInLoopThread() const { return tid_ == std::this_thread::get_id(); }
-    std::thread::id tid() const { return tid_; }  // for test-and-debug
+    bool isInLoopThread() const { return tid_ == gettid(); }
+    pid_t tid() const { return tid_; }  // for test-and-debug
 
     // timers
     TimerId runAt(const Timestamp& time, const TimerCallback& cb);
@@ -48,7 +49,7 @@ private:
     void doPendingFuncs_();
     std::unique_ptr<Handler> wakeupHandler_;
 
-    std::thread::id tid_; // one-loop-per-thread
+    const pid_t tid_; // one-loop-per-thread
     std::mutex lpMutex_;
 
     std::unique_ptr<Poller> poller_;

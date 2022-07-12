@@ -53,8 +53,8 @@ Different from these projects, this webserver is implemented based on C++11 stan
 
 |                            | QPS    |
 | -------------------------- | ------ |
-| **Short-Connection** | 22,365 |
-| **Long-Connection**  | 35,459 |
+| **Short-Connection** | 23,825 |
+| **Long-Connection**  | 35,014 |
 
 #### Details
 
@@ -77,8 +77,8 @@ Connection: close
 
 Runing info: 1000 clients, running 60 sec.
 
-Speed=1341813 pages/min, 3086356 bytes/sec.
-Requests: 1341813 susceed, 0 failed.
+Speed=1429491 pages/min, 3288001 bytes/sec.
+Requests: 1429491 susceed, 0 failed.
 ```
 
 * **Long-connection result**
@@ -100,6 +100,6 @@ Connection: Keep-Alive
 
 Runing info: 1000 clients, running 60 sec.
 
-Speed=2127541 pages/min, 5070639 bytes/sec.
-Requests: 2127541 susceed, 0 failed.
+Speed=2100869 pages/min, 5007071 bytes/sec.
+Requests: 2100869 susceed, 0 failed.
 ```

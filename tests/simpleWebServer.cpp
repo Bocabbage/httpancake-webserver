@@ -40,7 +40,7 @@ void onMessage(const TcpConnectionPtr &conn, Buffer *buf)
 
 int main()
 {
-    printf("main(): pid = %lu\n", std::this_thread::get_id());
+    printf("main(): pid = %lu\n", gettid());
     EventLoop lp;
 
     string ipAddr("ANY");

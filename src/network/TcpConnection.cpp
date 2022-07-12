@@ -54,7 +54,7 @@ void TcpConnection::send(const string& msg)
             // printf("***********************\n");
             // printf("TcpConnection::send: Not inLoop\n");
             // printf("WorkLp tid: %d\n", lp_->tid());
-            // printf("Current tid: %d\n", std::this_thread::get_id());
+            // printf("Current tid: %d\n", gettid());
             // printf("***********************\n");
 
             lp_->runInLoop(

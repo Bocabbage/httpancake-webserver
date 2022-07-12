@@ -7,7 +7,7 @@ using std::endl;
 
 void inLoopCall()
 {
-    cout << "inLoopCall: " << std::this_thread::get_id() << endl;
+    cout << "inLoopCall: " << gettid() << endl;
 }
 
 void subThread(EventLoop *mlp)
