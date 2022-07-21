@@ -12,7 +12,8 @@ class NonBlockingLog
 using LargeFixBuffer = FixBuffer<largeBufferSize>;
 
 public:
-    NonBlockingLog(const std::string &logFileName, int flushInterval);
+    // singleton
+    static NonBlockingLog& getNonBlockingLog(const std::string &logFileName, int flushInterval);
     ~NonBlockingLog();
 
     NonBlockingLog(const NonBlockingLog&) = delete;
@@ -22,7 +23,8 @@ public:
     void append(string&& msg);
 
 private:
-
+    NonBlockingLog() = delete;
+    NonBlockingLog(const std::string &logFileName, int flushInterval);
 
     void threadFunc();
     void writeBack(const string&);

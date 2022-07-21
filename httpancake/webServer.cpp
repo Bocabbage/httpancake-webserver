@@ -56,7 +56,7 @@ void webServer::onConnection(const TcpConnectionPtr& conn)
 {
     if(conn->connected())
     {
-        // LOG << "onConnection(): new connection [" << conn->name().c_str() << "]";
+        LOG << "onConnection(): new connection [" << conn->name().c_str() << "]";
         // For timing
         if(expiredSec_ > 0)
         {
@@ -68,8 +68,8 @@ void webServer::onConnection(const TcpConnectionPtr& conn)
     }
     else
     {
-        // LOG << "onConnection(): connection [" << conn->name().c_str() << "] is down; "
-        //     << "now " << server_.connSize() << "conns.";
+        LOG << "onConnection(): connection [" << conn->name().c_str() << "] is down; "
+            << "now " << server_.connSize() << "conns.";
     }
 }
 
@@ -107,7 +107,7 @@ void webServer::onMessage(const TcpConnectionPtr& conn, Buffer *inBuffer)
 
             if(httpConnPtr->state() == REQUEST_LINE_ERROR)
             {
-                // LOG << "Connection Error: " << conn->name().c_str() << "\tREQUEST-LINE-ERROR";
+                LOG << "Connection Error: " << conn->name().c_str() << "\tREQUEST-LINE-ERROR";
                 httpConnPtr->setProcessState(PROCESS_FAILED);
             }
             else
@@ -180,12 +180,11 @@ void webServer::onMessage(const TcpConnectionPtr& conn, Buffer *inBuffer)
         if(httpConnPtr->state() == PROCESS_SUCCESS)
         {
             if(httpConnPtr->requestType() == GET_METHOD)
-                ;
-                // LOG << "onMessage(): [" << conn->name().c_str() << "] get: " << httpConnPtr->url() << " successfully.";     
+                LOG << "onMessage(): [" << conn->name().c_str() << "] get: " << httpConnPtr->url() << " successfully.";     
         }
         else if(httpConnPtr->state() == PROCESS_FAILED)
         {
-            // LOG << "onMessage(): [" << conn->name().c_str() << "] request: " << httpConnPtr->url() << " failed.";
+            LOG << "onMessage(): [" << conn->name().c_str() << "] request: " << httpConnPtr->url() << " failed.";
         }
         httpConnPtr->clearState();
         if(!keepAliveState)
@@ -304,6 +303,7 @@ void webServer::responseToGet(HttpTcpConnection* httpConnPtr)
         close(requestFd);
 
         char *fileMapAddr = static_cast<char*>(fileMap);
+        // fixme: can be more robust for large-file sending
         string successResponseMsg(fileMapAddr, fileSz);
 
         munmap(fileMap, fileSz);

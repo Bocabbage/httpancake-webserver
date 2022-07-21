@@ -7,6 +7,12 @@
 
 using namespace std::chrono_literals;
 
+NonBlockingLog& NonBlockingLog::getNonBlockingLog(const std::string& logFileName, int flushInterval)
+{
+    static NonBlockingLog singletonLog(logFileName, flushInterval);
+    return singletonLog;
+}
+
 NonBlockingLog::NonBlockingLog(const std::string& logFileName, int flushInterval):
     logFileName_(logFileName),
     logFileFd_(::open(logFileName_.c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR)),
@@ -69,7 +75,8 @@ void NonBlockingLog::append(string &&msg)
         }
         else
             nowBuffer_ .reset(new LargeFixBuffer);
-            
+        
+        // Fix me: More robust -- check whether the empty largeFixBuffer is enough for msg?
         nowBuffer_->append(std::forward<string>(msg));
         cond_.notify_one(); // buffers_ is not empty now, notify the consumer(threadFunc)
     }     

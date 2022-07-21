@@ -1,14 +1,14 @@
 #include "Logger.hpp"
 #include "NonBlockingLog.hpp"
-#include <pthread.h>
+// #include <pthread.h>
 #include <memory>
 #include <sstream>
 #include <chrono>
 #include <iomanip>
 using time_point = std::chrono::system_clock::time_point;
 
-static pthread_once_t once_control_ = PTHREAD_ONCE_INIT;
-static std::unique_ptr<NonBlockingLog> nbLogger_;
+// static pthread_once_t once_control_ = PTHREAD_ONCE_INIT;
+// static std::unique_ptr<NonBlockingLog> nbLogger_;
 
 string Logger::logFileName_ = "./httpancake.log";
 
@@ -22,15 +22,16 @@ string serializeTimePoint( const time_point& time, const string& format)
     return ss.str();
 }
 
-void once_init()
-{
-    nbLogger_.reset(new NonBlockingLog(Logger::getLogFileName(), 3));
-}
+// void once_init()
+// {
+//     nbLogger_.reset(new NonBlockingLog(Logger::getLogFileName(), 3));
+// }
 
 void output(string&& msg)
 {
-    pthread_once(&once_control_, once_init);
-    nbLogger_->append(std::move(msg));
+    // pthread_once(&once_control_, once_init);
+    auto& nbLogger_ = NonBlockingLog::getNonBlockingLog(Logger::getLogFileName(), 3);
+    nbLogger_.append(std::move(msg));
 }
 
 Logger::Impl::Impl(const char *fileName, int line):
