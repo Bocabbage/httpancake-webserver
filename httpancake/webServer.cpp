@@ -130,12 +130,25 @@ void webServer::onMessage(const TcpConnectionPtr& conn, Buffer *inBuffer)
             }
 
             // keepAlive setting
+            if(httpConnPtr->httpVersion() == HTTP1_1)
+                httpConnPtr->setKeepAlive(true);    // default-on for http1.1
+
             if(headerContents.find("connection") != headerContents.end())
             {
-                std::regex keepAliveRegex("keep-alive", std::regex::icase);
-                httpConnPtr->setKeepAlive(
-                    std::regex_match(headerContents["connection"], keepAliveRegex)
-                );
+                if(httpConnPtr->httpVersion() == HTTP1_1)
+                {
+                    std::regex closeRegex("close", std::regex::icase);
+                    httpConnPtr->setKeepAlive(  
+                        !std::regex_match(headerContents["connection"], closeRegex)
+                    );
+                }
+                else
+                {
+                    std::regex keepAliveRegex("keep-alive", std::regex::icase);
+                    httpConnPtr->setKeepAlive(  
+                        std::regex_match(headerContents["connection"], keepAliveRegex)
+                    );
+                }
             }
 
             httpConnPtr->setProcessState(PARSE_BODY);
